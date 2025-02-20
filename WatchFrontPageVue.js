@@ -4,9 +4,9 @@ Vue.createApp({
   data() {
     return {
       items: [], // Holder alle elementer til tabellen
-      headers: ["ID", "Name"], // Dynamisk genererede kolonnenavne
-      formTemplate: { id: "", name: "" }, // Skabelon til formularfelter
-      formData: { id: "", name: "" }, // Data som brugeren indtaster i formularen
+      headers: ["ID", "Brand", "Model", "ReferenceNumber", "Year", "Accessories", "Functions", "Size", "Condition", "Description", "Price"], // Dynamisk genererede kolonnenavne
+      formTemplate: { id: "", brand: "", model: "", referencenumber: "", year: "", accessories: "", functions: "", size: "", condition: "", description: "", price: "" }, // Skabelon til formularfelter
+      formData: { id: "", brand: "", model: "", referencenumber: "", year: "", accessories: "", functions: "", size: "", condition: "", description: "", price: "" }, // Data som brugeren indtaster i formularen
     };
   },
   methods: {
@@ -38,6 +38,7 @@ Vue.createApp({
   },
   // Hent data, når applikationen loader
   mounted() {
+    console.log("Vue app mounted!");
     this.fetchItems();
-  },
+  }
 }).mount("#app");
