@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Create User</title>
+</head>
+
+<body>
+    <div id="app" class="container mt-5">
+        <div class="text-center">
+            <h1>Sign Up Form</h1>
+            <form @submit.prevent="signUpUser" class="mt-4 w-50 mx-auto">
+                <div class="form-group">
+                    <label for="username"><b>Username</b></label>
+                    <input id="username" v-model="username" placeholder="Enter Username" type="text"
+                        class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                    <label for="email"><b>Email</b></label>
+                    <input id="email" v-model="email" placeholder="Enter E-mail" type="email"
+                        class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                    <label for="password"><b>Password</b></label>
+                    <input id="password" v-model="password" type="password" placeholder="Enter Password"
+                        class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword"><b>Confirm Password</b></label>
+                    <input id="confirmPassword" v-model="confirmPassword" type="password"
+                        placeholder="Confirm Password" class="form-control form-control-sm">
+                </div>
+                <div v-if="errorMessage" class="alert alert-danger">
+                    {{errorMessage}}
+                </div>
+                <div v-if="successMessage" class="alert alert-success">
+                    {{successMessage}}
+                </div>
+                <button type="submit" class="btn btn-success btn-sm btn-block">Sign up</button>
+            </form>
+        </div>
+    </div>
+    <script src="Opretbrugerjs.js"></script>
+</body>
+
+</html>
+
