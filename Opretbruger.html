@@ -18,22 +18,22 @@
                 <div class="form-group">
                     <label for="username"><b>Username</b></label>
                     <input id="username" v-model="username" placeholder="Enter Username" type="text"
-                        class="form-control form-control-sm">
+                        class="form-control form-control-sm" required>
                 </div>
                 <div class="form-group">
                     <label for="email"><b>Email</b></label>
                     <input id="email" v-model="email" placeholder="Enter E-mail" type="email"
-                        class="form-control form-control-sm">
+                        class="form-control form-control-sm" required>
                 </div>
                 <div class="form-group">
                     <label for="password"><b>Password</b></label>
                     <input id="password" v-model="password" type="password" placeholder="Enter Password"
-                        class="form-control form-control-sm">
+                        class="form-control form-control-sm" required>
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword"><b>Confirm Password</b></label>
                     <input id="confirmPassword" v-model="confirmPassword" type="password"
-                        placeholder="Confirm Password" class="form-control form-control-sm">
+                        placeholder="Confirm Password" class="form-control form-control-sm" required>
                 </div>
                 <div v-if="errorMessage" class="alert alert-danger">
                     {{errorMessage}}
@@ -45,6 +45,7 @@
             </form>
         </div>
     </div>
+    
     <script src="Opretbrugerjs.js"></script>
 </body>
 
