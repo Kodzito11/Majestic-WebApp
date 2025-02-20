@@ -7,33 +7,38 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <title>Create User</title>
+    <title>Create Account</title>
+
+    <style>
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app" class="container mt-5">
-        <div class="text-center">
-            <h1>Sign Up Form</h1>
-            <form @submit.prevent="signUpUser" class="mt-4 w-50 mx-auto">
+        <div class="card shadow-lg p-4 mx-auto" style="max-width: 500px;">
+            <div class="text-center mb-4">
+                <h2>Create Account</h2>
+            </div>
+            <form @submit.prevent="signUpUser">
                 <div class="form-group">
-                    <label for="username"><b>Username</b></label>
-                    <input id="username" v-model="username" placeholder="Enter Username" type="text"
-                        class="form-control form-control-sm" required>
+                    <label for="username">Username</label>
+                    <input id="username" v-model="username" type="text" placeholder="Enter Username" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="email"><b>Email</b></label>
-                    <input id="email" v-model="email" placeholder="Enter E-mail" type="email"
-                        class="form-control form-control-sm" required>
+                    <label for="email">Email</label>
+                    <input id="email" v-model="email" type="email" placeholder="Enter E-mail" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="password"><b>Password</b></label>
-                    <input id="password" v-model="password" type="password" placeholder="Enter Password"
-                        class="form-control form-control-sm" required>
+                    <label for="password">Password</label>
+                    <input id="password" v-model="password" type="password" placeholder="Enter Password" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="confirmPassword"><b>Confirm Password</b></label>
-                    <input id="confirmPassword" v-model="confirmPassword" type="password"
-                        placeholder="Confirm Password" class="form-control form-control-sm" required>
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input id="confirmPassword" v-model="confirmPassword" type="password" placeholder="Confirm Password" class="form-control" required>
                 </div>
                 <div v-if="errorMessage" class="alert alert-danger">
                     {{errorMessage}}
@@ -41,13 +46,16 @@
                 <div v-if="successMessage" class="alert alert-success">
                     {{successMessage}}
                 </div>
-                <button type="submit" class="btn btn-success btn-sm btn-block">Sign up</button>
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                    Sign Up Now 🚀
+                </button>
             </form>
         </div>
     </div>
-    
+
     <script src="Opretbrugerjs.js"></script>
 </body>
 
 </html>
+
 

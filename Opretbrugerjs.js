@@ -32,7 +32,7 @@ Vue.createApp({
 
                
                 this.errorMessage = null;
-                this.successMessage = "User created successfully!";
+                this.successMessage = "Account created successfully!";
 
                 
                 this.username = '';
@@ -43,7 +43,7 @@ Vue.createApp({
             } catch (error) {
                 
                 this.successMessage = null;
-                this.errorMessage = "Failed to create user: " + (error.response?.data || error.message);
+                this.errorMessage = "Failed to create account: " + (error.response?.data || error.message);
             }
         }
     }
