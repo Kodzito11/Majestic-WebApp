@@ -3,53 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Data Table</title>
+    <title>Eksklusive Ure</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .product-card {
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .cart-item {
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
-        <div class="container mt-4">
-            <h1 class="text-center">Dynamic Data Table</h1>
+    <div id="app" class="container mt-4">
+        <h1 class="text-center mb-4">Eksklusive Ure</h1>
 
-            <!-- Hvis der ikke er data, vis en besked -->
-            <p v-if="items.length === 0">Loading...</p>
+        <!-- Filtrering -->
+        <div class="mb-3">
+            <input type="text" class="form-control" v-model="searchQuery" placeholder="Søg efter mærke eller model...">
+        </div>
 
-            <!-- Tabel til at vise data -->
-            <table class="table table-striped table-bordered" v-if="items.length > 0">
-                <thead>
-                    <tr>
-                        <th v-for="header in headers" :key="header">{{ header }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in items" :key="item.id">
-                        <td v-for="header in headers" :key="header">
-                            {{ item ? item[header.charAt(0).toLowerCase() + header.slice(1)] || 'N/A' : 'Loading...' }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- Form til at tilføje nye elementer -->
-            <div class="card mt-4 p-3">
-                <h2>Add New Item</h2>
-                <form @submit.prevent="addItem">
-                    <div v-for="(field, key) in formTemplate" :key="key" class="mb-3">
-                        <label :for="key" class="form-label">{{ key }}</label>
-                        <input type="text" class="form-control" :id="key" v-model="formData[key]" required />
+        <!-- Produktliste -->
+        <div class="row">
+            <div class="col-md-4 mb-4" v-for="watch in filteredWatches" :key="watch.id">
+                <div class="card product-card shadow-sm">
+                    <img :src="watch.image" :alt="watch.model" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ watch.brand }} - {{ watch.model }}</h5>
+                        <p class="card-text">Ref: <strong>{{ watch.referencenumber }}</strong></p>
+                        <p class="card-text">År: <strong>{{ watch.year }}</strong></p>
+                        <p class="card-text">Funktioner: <strong>{{ watch.functions }}</strong></p>
+                        <p class="card-text">Størrelse: <strong>{{ watch.size }} mm</strong></p>
+                        <p class="card-text">Beskrivelse: <strong>{{ watch.description }}</strong></p>
+                        <p class="card-text fw-bold text-success">{{ watch.price }} DKK</p>
+                        <button class="btn btn-primary w-100" @click="addToCart(watch)">Læg i kurv</button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Item</button>
-                </form>
+                </div>
             </div>
+        </div>
 
-            <!-- Debug knap -->
-            <button class="btn btn-secondary mt-3" @click="console.log(items)">Tjek items</button>
+        <!-- Indkøbskurv -->
+        <div class="mt-5">
+            <h2 class="text-center">Indkøbskurv</h2>
+            <ul class="list-group mt-3">
+                <li class="list-group-item d-flex justify-content-between align-items-center cart-item" v-for="item in cart" :key="item.id">
+                    {{ item.brand }} - {{ item.model }} - <strong>{{ item.price }} DKK</strong>
+                    <button class="btn btn-danger btn-sm" @click="removeFromCart(item.id)">Fjern</button>
+                </li>
+            </ul>
         </div>
     </div>
 
-    <!-- Vue.js & Axios -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="WatchFrontPageVue.js"></script> 
-</body>
-</html>
+    <script src="WatchFrontPageVue.js"></script>
+
+    <script>
+        console.log("Vue loader test");
+        if (typeof Vue !== "undefined") {
+            console.log("Vue er loaded korrekt!");
+        } else {
+            console.log("Vue blev IKKE loaded!");
+        }
+    </script>
+    
+    <script>
