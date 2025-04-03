@@ -148,107 +148,100 @@
     </style>
 </head>
 <body>
-  
-    <div id="app" class="container mt-4">
-        <div id="main">
-            <h1>Eksklusive Ure</h1>
-            <!-- Vise Login-knap, hvis brugeren ikke er logget ind -->
-            <button v-if="!isLoggedIn" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
-            <!-- Vise Logout-knap, hvis brugeren er logget ind -->
-            <button v-if="isLoggedIn" @click="logout" style="width:auto;">Logout</button>
-        </div>
-    
-        <!-- Login Modal -->
-        <div id="id01" class="modal">
-            <form class="modal-content animate" @submit.prevent="login">
-                <div class="imgcontainer">
-                    <span @click="closeLoginModal" class="close" title="Close Modal">&times;</span>
-                    <img src="Picture/James.png" alt="James" class="james">
-                </div>
-    
-                <div class="container">
-                    <label for="uname"><b>Email</b></label>
-                    <input type="text" placeholder="Enter Email" v-model="loginData.email" required>
-    
-                    <label for="psw"><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" v-model="loginData.password" required>
-    
-                    <button type="submit">Login</button>
-                    <label>
-                        <input type="checkbox" checked="checked" name="remember"> Remember me
-                    </label>
-                </div>
-                
-                <!-- Forgot Password and Sign Up links are inside the modal -->
-                <div class="modal-container">
-                    <button type="button" @click="closeLoginModal" class="cancelbtn">Cancel</button>
-                    <span class="psw">Forgot <a href="#">password?</a></span>
-                    <br><br>
-                    <span class="psw">No account? <a href="Opretbruger.html">Sign Up</a></span>
-                </div>
-            </form>
-        </div>
-    </div>
-          
-          <script>
-          // Get the modal
-          var modal = document.getElementById('id01');
-          
-          // When the user clicks anywhere outside of the modal, close it
-          window.onclick = function(event) {
-              if (event.target == modal) {
-                  modal.style.display = "none";
-              }
+
+  <!-- VUE APP START -->
+  <div id="app" class="container mt-4">
+      <div id="main">
+          <h1>Eksklusive Ure</h1>
+          <!-- Vise Login-knap, hvis brugeren ikke er logget ind -->
+          <button v-if="!isLoggedIn" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+          <!-- Vise Logout-knap, hvis brugeren er logget ind -->
+          <button v-if="isLoggedIn" @click="logout" style="width:auto;">Logout</button>
+      </div>
+
+      <!-- Login Modal -->
+      <div id="id01" class="modal">
+          <form class="modal-content animate" @submit.prevent="login">
+              <div class="imgcontainer">
+                  <span @click="closeLoginModal" class="close" title="Close Modal">&times;</span>
+                  <img src="Picture/James.png" alt="James" class="james">
+              </div>
+
+              <div class="container">
+                  <label for="uname"><b>Email</b></label>
+                  <input type="text" placeholder="Enter Email" v-model="loginData.email" required>
+
+                  <label for="psw"><b>Password</b></label>
+                  <input type="password" placeholder="Enter Password" v-model="loginData.password" required>
+
+                  <button type="submit">Login</button>
+                  <label>
+                      <input type="checkbox" checked="checked" name="remember"> Remember me
+                  </label>
+              </div>
+
+              <div class="modal-container">
+                  <button type="button" @click="closeLoginModal" class="cancelbtn">Cancel</button>
+                  <span class="psw">Forgot <a href="#">password?</a></span>
+                  <br><br>
+                  <span class="psw">No account? <a href="Opretbruger.html">Sign Up</a></span>
+              </div>
+          </form>
+      </div>
+
+      <!-- 🔧 FILTRERINGEN ER FLYTTET IND I VUE APP HER -->
+      <div class="mb-3">
+          <input type="text" class="form-control" v-model="searchQuery" placeholder="Søg efter mærke eller model...">
+      </div>
+
+      <!-- 🔧 PRODUKTLISTEN ER FLYTTET IND I VUE APP HER -->
+      <div class="row">
+          <div class="col-md-4 mb-4" v-for="watch in filteredWatches" :key="watch.id">
+              <div class="card product-card shadow-sm">
+                  <img src="/Picture/Clock.png" alt="Clock.png" class="clock">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ watch.brand }} - {{ watch.model }}</h5>
+                      <p class="card-text fw-bold text-success">{{ watch.price }} DKK</p>
+                      <button class="btn btn-primary w-100" @click="addToCart(watch)">Læg i kurv</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- 🔧 INDKØBSKURV ER FLYTTET IND I VUE APP HER -->
+      <div class="mt-5">
+          <h2 class="text-center">Indkøbskurv</h2>
+          <ul class="list-group mt-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center cart-item" v-for="item in cart" :key="item.id">
+                  {{ item.brand }} - {{ item.model }} - <strong>{{ item.price }} DKK</strong>
+                  <button class="btn btn-danger btn-sm" @click="removeFromCart(item.id)">Fjern</button>
+              </li>
+          </ul>
+      </div>
+  </div>
+  <!-- VUE APP SLUT -->
+
+  <!-- UDENFOR VUE APP: MODAL CLOSE SCRIPT -->
+  <script>
+      var modal = document.getElementById('id01');
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
           }
-          </script>
+      }
+  </script>
 
-        <!-- Filtrering -->
-        <div class="mb-3">
-            <input type="text" class="form-control" v-model="searchQuery" placeholder="Søg efter mærke eller model...">
-        </div>
+  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="WatchFrontPageVue.js"></script>
 
-        <!-- Produktliste -->
-        <div class="row">
-            <div class="col-md-4 mb-4" v-for="watch in filteredWatches" :key="watch.id">
-                <div class="card product-card shadow-sm">
-                    <img src="/Picture/Clock.png" alt="Clock.png" class="clock">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ watch.brand }} - {{ watch.model }}</h5>
-                        <!-- <p class="card-text">Ref: <strong>{{ watch.referencenumber }}</strong></p> -->
-                        <p class="card-text">År: <strong>{{ watch.year }}</strong></p>
-                        <!-- <p class="card-text">Funktioner: <strong>{{ watch.functions }}</strong></p>
-                        <p class="card-text">Størrelse: <strong>{{ watch.size }} mm</strong></p> -->
-                        <!-- <p class="card-text">Beskrivelse: <strong>{{ watch.description }}</strong></p> -->
-                        <p class="card-text fw-bold text-success">{{ watch.price }} DKK</p>
-                        <button class="btn btn-primary w-100" @click="addToCart(watch)">Læg i kurv</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Indkøbskurv -->
-        <div class="mt-5">
-            <h2 class="text-center">Indkøbskurv</h2>
-            <ul class="list-group mt-3">
-                <li class="list-group-item d-flex justify-content-between align-items-center cart-item" v-for="item in cart" :key="item.id">
-                    {{ item.brand }} - {{ item.model }} - <strong>{{ item.price }} DKK</strong>
-                    <button class="btn btn-danger btn-sm" @click="removeFromCart(item.id)">Fjern</button>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="WatchFrontPageVue.js"></script>
-
-    <script>
-        console.log("Vue loader test");
-        if (typeof Vue !== "undefined") {
-            console.log("Vue er loaded korrekt!");
-        } else {
-            console.log("Vue blev IKKE loaded!");
-        }
-    </script>
-    
-    <script>
+  <script>
+      console.log("Vue loader test");
+      if (typeof Vue !== "undefined") {
+          console.log("Vue er loaded korrekt!");
+      } else {
+          console.log("Vue blev IKKE loaded!");
+      }
+  </script>
+</body>
