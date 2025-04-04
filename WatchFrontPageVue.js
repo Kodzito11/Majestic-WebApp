@@ -1,5 +1,6 @@
 const baseUrl = "https://localhost:7132/api/Watch";
 const loginUrl = "https://localhost:7132/api/auth/login";
+const searchUrl = `${baseUrl}/search?query=${this.searchQuery}`;
 
 const app = Vue.createApp({
     data() {
@@ -24,9 +25,9 @@ const app = Vue.createApp({
     },
     methods: {
         // Hent ure
-        async fetchItems() {
+        async fetchItems(query = "") {
             try {
-                const response = await axios.get(baseUrl);
+                const response = await axios.get(baseUrl, { params: { query } });
                 console.log("Fetched items:", response.data);
                 this.items = response.data;
             } catch (error) {
@@ -93,6 +94,11 @@ const app = Vue.createApp({
         // Luk login modal
         closeLoginModal() {
             document.getElementById('id01').style.display = 'none';
+        }
+    },
+    watch: {
+        searchQuery(newQuery) {
+            this.fetchItems(newQuery); // Opdater ure ved søgning
         }
     },
     mounted() {
