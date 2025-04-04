@@ -212,6 +212,12 @@
       <div class="mt-5">
           <h2 class="text-center">Indkøbskurv</h2>
           <ul class="list-group mt-3">
+            
+            <!-- Checkout-knap -->
+        <div class="text-center mt-3" v-if="cart.length > 0">
+          <button class="btn btn-success" @click="checkout">Gå til betaling</button>
+        </div>
+
               <li class="list-group-item d-flex justify-content-between align-items-center cart-item" v-for="item in cart" :key="item.id">
                   {{ item.brand }} - {{ item.model }} - <strong>{{ item.price }} DKK</strong>
                   <button class="btn btn-danger btn-sm" @click="removeFromCart(item.id)">Fjern</button>

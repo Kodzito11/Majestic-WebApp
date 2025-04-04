@@ -33,14 +33,44 @@ const app = Vue.createApp({
                 console.error("Error fetching items:", error);
             }
         },
-        // Læg ure i kurv
-        addToCart(watch) {
-            this.cart.push(watch);
-        },
+        async addToCart(watch) {
+            const token = localStorage.getItem("jwt");
+        
+            const cartItem = {
+                watchId: watch.id,
+                quantity: 1,
+                totalPrice: watch.price
+            };
+            
+        
+            try {
+                const response = await axios.post("https://localhost:7132/api/cart/add", cartItem, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+        
+                this.cart = response.data; // backend returnerer opdateret kurv
+            } catch (error) {
+                alert("Kunne ikke tilføje til kurv: " + (error.response?.data || error.message));
+            }
+        },        
         // Fjern ure fra kurven
         removeFromCart(id) {
             this.cart = this.cart.filter(item => item.id !== id);
         },
+        async checkout() {
+            const token = localStorage.getItem("jwt");
+            try {
+                const response = await await axios.post("https://localhost:7132/api/cart/checkout", this.cart, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                alert("Tak for dit køb!");
+                this.cart = []; // ryd kurven
+            } catch (error) {
+                alert("Noget gik galt under betaling: " + (error.response?.data || error.message));
+            }
+        },        
         // Login funktion
         async login() {
             try {
