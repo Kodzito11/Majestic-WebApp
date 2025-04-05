@@ -40,7 +40,32 @@
 
       <button type="submit">Create Watch</button>
     </form>
+  
+  <!-- Liste over eksisterende ure -->
+  <h3>Existing Watches</h3>
+  <div v-for="watch in items" :key="watch.id" class="watch-item">
+    <p><strong>{{ watch.brand }}</strong> - {{ watch.model }} ({{ watch.price }} DKK)</p>
+    <button @click="editWatch(watch)">Edit</button>
   </div>
+
+  <!-- Modal til redigering -->
+  <div id="editModal" class="modal" v-if="isEditModalOpen">
+    <form class="modal-content" @submit.prevent="updateWatch">
+      <span class="close" @click="closeEditModal">&times;</span>
+      <h3>Edit Watch</h3>
+      <label for="editBrand">Brand:</label>
+      <input type="text" v-model="editWatchData.brand" required />
+
+      <label for="editModel">Model:</label>
+      <input type="text" v-model="editWatchData.model" required />
+
+      <label for="editPrice">Price:</label>
+      <input type="number" v-model="editWatchData.price" required />
+
+      <button type="submit">Update Watch</button>
+    </form>
+  </div>
+</div>
 
   <!-- Inkluder AdminCreateWatch.js -->
   <script src="AdminCreateWatch.js"></script>
