@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Watch</title>
+  <!-- Inkluder Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.js"></script>
+  <!-- Inkluder jwt-decode biblioteket -->
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Vue-applikationen bliver mountet her -->
+    <h2>Create a New Watch</h2>
+    <form @submit.prevent="createWatch">
+      <label for="brand">Brand:</label>
+      <input type="text" v-model="newWatch.brand" required />
+
+      <label for="model">Model:</label>
+      <input type="text" v-model="newWatch.model" required />
+
+      <label for="referenceNumber">Reference Number:</label>
+      <input type="text" v-model="newWatch.referenceNumber" required />
+
+      <label for="year">Year:</label>
+      <input type="number" v-model="newWatch.year" required />
+
+      <label for="functions">Functions:</label>
+      <input type="text" v-model="newWatch.functions" required />
+
+      <label for="size">Size:</label>
+      <input type="number" v-model="newWatch.size" required />
+
+      <label for="description">Description:</label>
+      <textarea v-model="newWatch.description"></textarea>
+
+      <label for="price">Price:</label>
+      <input type="number" v-model="newWatch.price" required />
+
+      <button type="submit">Create Watch</button>
+    </form>
+  </div>
+
+  <!-- Inkluder AdminCreateWatch.js -->
+  <script src="AdminCreateWatch.js"></script>
+</body>
+</html>
+

@@ -117,8 +117,14 @@
     </div>
   </div>
 
+  <!-- Oprettelse af ure, kun admin-->
+
+  <div v-if="userRole === 'Admin'">
+    <button @click="goToCreateWatch" class="btn btn-primary">Opret Nyt Ur</button>
+  </div>
+
   <!-- Indkøbskurv -->
-<div class="mt-5">
+ <div class="mt-5">
   <h2 class="text-center">Indkøbskurv</h2>
   <ul class="list-group mt-3">
     <li class="list-group-item d-flex justify-content-between align-items-center cart-item fw-bold bg-light">

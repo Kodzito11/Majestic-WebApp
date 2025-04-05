@@ -12,7 +12,8 @@ const app = Vue.createApp({
                 password: ''
             },
             isLoggedIn: false, // Track login status
-            userRole: '' // Track user's role
+            userRole: '', // Track user's role
+            watches: []
         };
     },
     computed: {
@@ -41,7 +42,9 @@ const app = Vue.createApp({
                 withCredentials: true
             });            
         },
-        
+    goToCreateWatch() {
+        window.location.href = "AdminCreateWatch.html"; // Naviger til AdminCreateWatch-siden
+    },
         // Læg ure i kurv via backend
         async addToCart(watch) {
             console.log("addToCart triggered:", watch);
@@ -113,6 +116,7 @@ const app = Vue.createApp({
             this.isLoggedIn = true;
             const decoded = jwt_decode(token);
             this.userRole = decoded.role;
+            console.log("User role:", this.userRole); // Debugging
         }
         this.fetchItems();
     }
