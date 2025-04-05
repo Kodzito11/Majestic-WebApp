@@ -1,258 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eksklusive Ure</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .product-card {
-            transition: transform 0.2s;
-        }
-        .product-card:hover {
-            transform: scale(1.05);
-        }
-        .product-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        .cart-item {
-            font-size: 1.1rem;
-        }
-        body {font-family: Arial, Helvetica, sans-serif;}
-
-        /* Full-width input fields */
-        input[type=text], input[type=password] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        /* Set a style for all buttons */
-        button {
-            background-color: #04AA6D;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
-
-        /* Extra styles for the cancel button */
-        .cancelbtn {
-            width: auto;
-            padding: 10px 18px;
-            background-color: #f44336;
-        }
-
-        /* Center the image and position the close button */
-        .imgcontainer {
-            text-align: center;
-            margin: 24px 0 12px 0;
-            position: relative;
-        }
-
-        img.avatar {
-            width: 40%;
-            border-radius: 50%;
-        }
-
-        .container {
-            padding: 16px;
-        }
-
-        span.psw {
-            float: right;
-            padding-top: 16px;
-        }
-
-        /* The Modal (background) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            padding-top: 60px;
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-        }
-
-        /* The Close Button (x) */
-        .close {
-            position: absolute;
-            right: 25px;
-            top: 0;
-            color: #000;
-            font-size: 35px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: red;
-            cursor: pointer;
-        }
-
-        /* Add Zoom Animation */
-        .animate {
-            -webkit-animation: animatezoom 0.6s;
-            animation: animatezoom 0.6s
-        }
-
-        @-webkit-keyframes animatezoom {
-            from {-webkit-transform: scale(0)} 
-            to {-webkit-transform: scale(1)}
-        }
-          
-        @keyframes animatezoom {
-            from {transform: scale(0)} 
-            to {transform: scale(1)}
-        }
-        #main {
-            text-align: center;
-            margin-top: 50px;
-        }
-        button {
-            float: right;
-        }
-
-        /* Ensures Forgot password and Sign up are in the modal */
-        .modal-container {
-            background-color: #f1f1f1;
-        }
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eksklusive Ure</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .product-card {
+      transition: transform 0.2s;
+    }
+    .product-card:hover {
+      transform: scale(1.05);
+    }
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .cart-item {
+      font-size: 1.1rem;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px;
+      padding: 20px;
+    }
+    .close {
+      position: absolute;
+      right: 25px;
+      top: 0;
+      color: #000;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: red;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- VUE APP START -->
 <div id="app" class="container mt-4">
-    <div id="main">
-        <h1>Eksklusive Ure</h1>
-        <!-- Vise Login-knap, hvis brugeren ikke er logget ind -->
-        <button v-if="!isLoggedIn" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
-        <!-- Vise Logout-knap, hvis brugeren er logget ind -->
-        <button v-if="isLoggedIn" @click="logout" style="width:auto;">Logout</button>
-        <!-- Display user role when logged in -->
-        <span v-if="isLoggedIn">Logged in as: {{ userRole }}</span>
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Eksklusive Ure</h1>
+    <div>
+      <button v-if="!isLoggedIn" onclick="document.getElementById('id01').style.display='block'" class="btn btn-outline-primary">Login</button>
+      <button v-if="isLoggedIn" @click="logout" class="btn btn-outline-danger">Logout</button>
+      <span v-if="isLoggedIn" class="ms-2">Logged in as: {{ userRole }}</span>
     </div>
+  </div>
 
-    <!-- Login Modal -->
-    <div id="id01" class="modal">
-        <form class="modal-content animate" @submit.prevent="login">
-            <div class="imgcontainer">
-                <span @click="closeLoginModal" class="close" title="Close Modal">&times;</span>
-                <img src="Picture/James.png" alt="James" class="james">
-            </div>
+  <!-- Modal -->
+  <div id="id01" class="modal">
+    <form class="modal-content" @submit.prevent="login">
+      <span class="close" @click="closeLoginModal">&times;</span>
+      <div class="text-center">
+        <img src="Picture/James.png" alt="James" class="img-fluid mb-3" style="max-width: 70%;">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label"><b>Email</b></label>
+        <input type="text" id="email" v-model="loginData.email" class="form-control" placeholder="Enter Email" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label"><b>Password</b></label>
+        <input type="password" id="password" v-model="loginData.password" class="form-control" placeholder="Enter Password" required>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" checked>
+        <label class="form-check-label">Remember me</label>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Login</button>
+      <div class="mt-3 text-center">
+        <span class="psw">Forgot <a href="#">password?</a></span><br>
+        <span class="psw">No account? <a href="Opretbruger.html">Sign Up</a></span>
+      </div>
+    </form>
+  </div>
 
-            <div class="container">
-                <label for="uname"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" v-model="loginData.email" required>
+  <!-- Søgning -->
+  <div class="mb-3 mt-4">
+    <input type="text" class="form-control" v-model="searchQuery" placeholder="Søg efter mærke eller model...">
+  </div>
 
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" v-model="loginData.password" required>
-
-                <button type="submit">Login</button>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Remember me
-                </label>
-            </div>
-
-            <div class="modal-container">
-                <button type="button" @click="closeLoginModal" class="cancelbtn">Cancel</button>
-                <span class="psw">Forgot <a href="#">password?</a></span>
-                <br><br>
-                <span class="psw">No account? <a href="Opretbruger.html">Sign Up</a></span>
-            </div>
-        </form>
+  <!-- Produktliste -->
+  <div class="row">
+    <div class="col-md-4 mb-4" v-for="watch in filteredWatches" :key="watch.id">
+      <div class="card product-card shadow-sm">
+        <img src="/Picture/Clock.png" alt="Clock.png" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ watch.brand }} - {{ watch.model }}</h5>
+          <p class="card-text fw-bold text-success">{{ watch.price }} DKK</p>
+          <button class="btn btn-primary w-100" @click="addToCart(watch)">Læg i kurv</button>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Indkøbskurv -->
+<div class="mt-5">
+  <h2 class="text-center">Indkøbskurv</h2>
+  <ul class="list-group mt-3">
+    <li class="list-group-item d-flex justify-content-between align-items-center cart-item fw-bold bg-light">
+      Produkt
+      <span>Pris</span>
+    </li>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center cart-item"
+      v-for="item in cart"
+      :key="item.id"
+    >
+      {{ item.brand }} - {{ item.model }}
+      <div>
+        {{ item.totalPrice }} DKK
+        <button class="btn btn-danger btn-sm ms-2" @click="removeFromCart(item.id)">Fjern</button>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Total pris -->
+  <div class="text-end fw-bold mt-2" v-if="cart.length > 0">
+    Total: {{ cartTotal }} DKK
+  </div>
+
+  <!-- Checkout-knap -->
+  <div class="text-center mt-3" v-if="cart.length > 0">
+    <button class="btn btn-success" @click="checkout">Gå til betaling</button>
+  </div>
 </div>
 
-      <!-- 🔧 FILTRERINGEN ER FLYTTET IND I VUE APP HER -->
-      <div class="mb-3">
-          <input type="text" class="form-control" v-model="searchQuery" placeholder="Søg efter mærke eller model...">
-      </div>
-
-      <!-- 🔧 PRODUKTLISTEN ER FLYTTET IND I VUE APP HER -->
-      <div class="row">
-          <div class="col-md-4 mb-4" v-for="watch in filteredWatches" :key="watch.id">
-              <div class="card product-card shadow-sm">
-                  <img src="/Picture/Clock.png" alt="Clock.png" class="clock">
-                  <div class="card-body">
-                      <h5 class="card-title">{{ watch.brand }} - {{ watch.model }}</h5>
-                      <p class="card-text fw-bold text-success">{{ watch.price }} DKK</p>
-                      <button class="btn btn-primary w-100" @click="addToCart(watch)">Læg i kurv</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-
-      <!-- 🔧 INDKØBSKURV ER FLYTTET IND I VUE APP HER -->
-      <div class="mt-5">
-          <h2 class="text-center">Indkøbskurv</h2>
-          <ul class="list-group mt-3">
-            
-            <!-- Checkout-knap -->
-        <div class="text-center mt-3" v-if="cart.length > 0">
-          <button class="btn btn-success" @click="checkout">Gå til betaling</button>
-        </div>
-
-              <li class="list-group-item d-flex justify-content-between align-items-center cart-item" v-for="item in cart" :key="item.id">
-                  {{ item.brand }} - {{ item.model }} - <strong>{{ item.price }} DKK</strong>
-                  <button class="btn btn-danger btn-sm" @click="removeFromCart(item.id)">Fjern</button>
-              </li>
-          </ul>
-      </div>
-  </div>
-  <!-- VUE APP SLUT -->
-
-  <!-- UDENFOR VUE APP: MODAL CLOSE SCRIPT -->
-  <script>
-      var modal = document.getElementById('id01');
-      window.onclick = function(event) {
-          if (event.target == modal) {
-              modal.style.display = "none";
-          }
-      }
-  </script>
-
-  <!-- SCRIPTS -->
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="WatchFrontPageVue.js"></script>
-
-  <script>
-      console.log("Vue loader test");
-      if (typeof Vue !== "undefined") {
-          console.log("Vue er loaded korrekt!");
-      } else {
-          console.log("Vue blev IKKE loaded!");
-      }
-  </script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="WatchFrontPageVue.js"></script>
+<script>
+  window.onclick = function(event) {
+    const modal = document.getElementById('id01');
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+</script>
 </body>
+</html>

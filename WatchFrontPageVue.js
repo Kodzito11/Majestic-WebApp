@@ -37,48 +37,53 @@ const app = Vue.createApp({
         },
         // Hent kurv fra backend
         async fetchCart() {
-            try {
-                const response = await axios.get(cartUrl);
-                console.log("Fetched cart:", response.data);
-                this.cart = response.data;
-            } catch (error) {
-                console.error("Error fetching cart:", error);
-            }
+            const response = await axios.get("https://localhost:7132/api/cart", {
+                withCredentials: true
+            });            
         },
         
         // Læg ure i kurv via backend
         async addToCart(watch) {
-            const token = localStorage.getItem("jwt");
+            console.log("addToCart triggered:", watch);
+        
             const cartItem = {
                 watchId: watch.id,
                 quantity: 1,
                 totalPrice: watch.price
             };
+        
             try {
                 const response = await axios.post("https://localhost:7132/api/cart/add", cartItem, {
-                    headers: { Authorization: `Bearer ${token}` }
+                    withCredentials: true
                 });
                 this.cart = response.data;
             } catch (error) {
-                console.error("Error adding to cart:", error.response?.data || error.message);
+                console.error("Fejl:", error);
                 alert("Kunne ikke tilføje til kurv: " + (error.response?.data || error.message));
             }
-        },
-        removeFromCart(id) {
-            this.cart = this.cart.filter(item => item.id !== id);
-        },
-        async checkout() {
-            const token = localStorage.getItem("jwt");
+        },        
+        async removeFromCart(id) {
             try {
-                const response = await axios.post("https://localhost:7132/api/cart/checkout", this.cart, {
-                    headers: { Authorization: `Bearer ${token}` }
+                await axios.post("https://localhost:7132/api/cart/remove", { id }, {
+                    withCredentials: true
+                });
+                this.fetchCart(); // eller opdatér `this.cart` manuelt
+            } catch (error) {
+                console.error("Fejl ved fjernelse fra kurv:", error);
+            }
+        },        
+        async checkout() {
+            try {
+                const response = await axios.post("https://localhost:7132/api/cart/checkout", {}, {
+                    withCredentials: true
                 });
                 alert("Tak for dit køb!");
-                this.cart = [];
+                this.cart = []; // Tøm kurven på frontend
             } catch (error) {
+                console.error("Fejl under checkout:", error);
                 alert("Noget gik galt under betaling: " + (error.response?.data || error.message));
             }
-        },
+        },        
         async login() {
             try {
                 const response = await axios.post(loginUrl, this.loginData);
