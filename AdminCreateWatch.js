@@ -18,7 +18,8 @@ createApp({
       },
       items: [], // Liste over eksisterende ure
       isEditModalOpen: false, // Styrer visning af redigeringsmodal
-      editWatchData: {} // Data for det ur, der redigeres
+      editWatchData: {}, // Data for det ur, der redigeres
+      isAdmin: false, // Antag at brugeren ikke er admin for nu
     };
   },
   methods: {
@@ -32,6 +33,24 @@ createApp({
         console.error("Error fetching items:", error);
       }
     },
+    methods: {
+      // Andet kode...
+    
+      logout() {
+        // Fjern JWT token og log ud
+        localStorage.removeItem("jwt");
+    
+        // Opdater isAdmin og sørg for, at Vue opdaterer DOM'en
+        this.isAdmin = false;
+    
+        // Brug nextTick for at sikre, at DOM'en opdateres korrekt
+        this.$nextTick(() => {
+          console.log("Admin er nu logget ud, og knappen skal forsvinde.");
+        });
+      },
+      
+      // Resten af dine metoder...
+    },    
     async createWatch() {
       try {
         const response = await fetch(baseUrl, {
@@ -103,7 +122,13 @@ createApp({
     }
   },
   mounted() {
-    this.fetchItems(); // Hent listen over ure ved indlæsning
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      const decoded = jwt_decode(token);
+      this.isAdmin = decoded.role === "Admin";  // Sørg for at være admin, før du tillader oprettelse
+    } else {
+      this.isAdmin = false;  // Hvis ikke logged in, ikke admin
+  }
   }
 }).mount('#app');
 
