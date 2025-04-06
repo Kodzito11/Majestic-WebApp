@@ -10,10 +10,14 @@
     <title>Create Account</title>
 
     <style>
-        
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
+        .strength-very-weak { color: red; }
+        .strength-weak { color: orange; }
+        .strength-medium { color: yellow; }
+        .strength-strong { color: green; }
+        .strength-very-strong { color: darkgreen; }
     </style>
 </head>
 
@@ -35,6 +39,10 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input id="password" v-model="password" type="password" placeholder="Enter Password" class="form-control" required>
+                    <!-- Displaying password strength -->
+                    <div class="mt-2" v-if="passwordStrength" :class="'strength-' + passwordStrength.toLowerCase().replace(' ', '-')">
+                        {{ passwordStrength }}
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
@@ -57,5 +65,7 @@
 </body>
 
 </html>
+
+
 
 
