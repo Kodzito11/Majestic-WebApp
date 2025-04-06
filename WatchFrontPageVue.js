@@ -13,10 +13,13 @@ const app = Vue.createApp({
             },
             isLoggedIn: false, // Track login status
             userRole: '', // Track user's role
-            watches: []
+            watches: [],
+            isAdmin: false, // Track if user is admin
+            
         };
     },
     computed: {
+        
         filteredWatches() {
             return this.items.filter(watch => 
                 watch.brand.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
@@ -95,6 +98,7 @@ const app = Vue.createApp({
                 this.isLoggedIn = true;
                 const decoded = jwt_decode(token);
                 this.userRole = decoded.role;
+                this.isAdmin = decoded.role === "Admin";
                 alert("Login successful!");
                 document.getElementById('id01').style.display = 'none';
             } catch (error) {
@@ -104,7 +108,13 @@ const app = Vue.createApp({
         logout() {
             localStorage.removeItem("jwt");
             this.isLoggedIn = false;
-            alert("You have logged out.");
+            this.isAdmin = false;
+            
+            this.$nextTick(() => {
+                alert("Du er logget ud.");
+            // alert("You have logged out.");
+            });
+
         },
         closeLoginModal() {
             document.getElementById('id01').style.display = 'none';
@@ -117,6 +127,7 @@ const app = Vue.createApp({
             const decoded = jwt_decode(token);
             this.userRole = decoded.role;
             console.log("User role:", this.userRole); // Debugging
+            this.isAdmin = decoded.role === "Admin";
         }
         this.fetchItems();
     }

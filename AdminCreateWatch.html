@@ -13,7 +13,7 @@
   <div id="app">
     <!-- Vue-applikationen bliver mountet her -->
     <h2>Create a New Watch</h2>
-    <form @submit.prevent="createWatch">
+    <form v-if="isAdmin" @submit.prevent="createWatch">
       <label for="brand">Brand:</label>
       <input type="text" v-model="newWatch.brand" required />
 
@@ -38,7 +38,9 @@
       <label for="price">Price:</label>
       <input type="number" v-model="newWatch.price" required />
 
-      <button type="submit">Create Watch</button>
+      <button v-if="isAdmin" type="submit">Create Watch</button>
+      
+
     </form>
   
   <!-- Liste over eksisterende ure -->
